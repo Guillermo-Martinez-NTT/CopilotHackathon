@@ -23,4 +23,26 @@ class CopilotDemoApplicationTests {
 			.andExpect(MockMvcResultMatchers.content().string("hello world"));
 	}
 
+	@Test
+	void helloWithoutKey() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/hello"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string("key has not been passed"));
+	}
+
+	@Test
+	void helloWithEmptyKey() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/hello?key="))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string("hello "));
+	}
+
+	@Test
+	void helloWithMultipleKeys() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/hello?key=world&key=world2"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string("hello world,world2"));
+	}
+
+
 }
